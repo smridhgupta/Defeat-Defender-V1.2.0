@@ -79,25 +79,3 @@ Tested on **Windows 11 Pro**
 
 ---
 
-## Contact :
-<a href=mailto:swagkarna@gmail.com><img src="https://img.shields.io/badge/Gmail-swagkarna-green?style=for-the-badge" /></a>
-<a href=https://twitter.com/swagkarna><img src="https://img.shields.io/badge/Twitter-@swagkarna-blue?style=for-the-badge" /></a>
-
----
-<p align="center">  
-<img src="https://raw.githubusercontent.com/swagkarna/Defeat-Defender/main/42796435.png" width="150px" height="150px"></img>
-</p>
-<h2 align="center">Inspired From <a href="https://www.youtube.com/channel/UCYS9sTrPpcIVDxz2yVPbuLw">TechChip</a></h2>
-
----
-
-### Special thanks to  <a href="https://www.linkedin.com/posts/jeffrey-d-howard-6b578225_defeat-defender-powerful-batch-script-to-activity-6792216498413944832-mWEa">Jeffrey-d-howard</a>(Senior Vulnerability Management Lead) For Posting Defeat-Defender on his linked page
-
----
-### ❤️Supporters❤️
-[![Stargazers repo roster for @swagkarna/Defeat-Defender-V1.2.0](https://reporoster.com/stars/swagkarna/Defeat-Defender-V1.2)](https://github.com/swagkarna/Defeat-Defender/stargazers)
-
-[![Forkers repo roster for @swagkarna/Defeat-Defender-V1.2.0](https://reporoster.com/forks/swagkarna/Defeat-Defender-V1.2)](https://github.com/swagkarna/Defeat-Defender/network/members)
-
----
-
